@@ -1,0 +1,293 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>WeatherMan V0.1</title>
+    <meta  name="viewport" content="width=device-width, initial-scale=0, user-scalable=yes" />
+    <meta  http-equiv="Content-type" content="text/html; charset=utf-8">
+    <script type="text/javascript" charset="utf-8" src="cordova-2.0.0.js"></script>   
+    <script type="text/javascript" charset="utf-8" src="js/hash.js"></script>   
+
+	<link   rel="stylesheet" href="jquery/jquery.mobile-1.1.1.min.css" />
+	<script src="jquery/jquery-1.7.2.min.js"></script>
+	<script src="jquery/jquery.mobile-1.1.1.min.js"></script>
+
+   <script >
+		///////////////////////// jQuery Stuff //////////////////////////////////////
+
+   		////////////////////////// Location Services /////////////////////////////////
+   		var pos = "140510";
+   		var locName = "zuhause";
+		var db;
+   		function setPicture(img)
+    	{
+			if (img != "CurrentLoc"){
+				chgPicture("http://www.wetterzentrale.de/pics/MS_"+img+".png");
+			}else{
+				chgPicture("http://www.wetterzentrale.de/pics/MS_"+pos+"_g05.png");
+			}			
+		}	    	
+
+   		function chgPicture(newimg)
+    	{
+			var neues_bild = new Image(); // Image-Objekt erzeugen
+			neues_bild.src = newimg; // zweites Bild laden
+			document.forecastimg.src = neues_bild.src;		
+		}	    	
+	    // Wait for Cordova to load
+	    //
+	    document.addEventListener("deviceready", onDeviceReady, false);
+	
+	    // Cordova is ready
+	    //
+	    function onDeviceReady() {
+	        navigator.geolocation.getCurrentPosition(onSuccess, onError);
+	     //   sqLiteOpen();
+	    }
+	
+	    // onSuccess Geolocation
+	    function onSuccess(position) { 
+	    	initPage(position.coords.longitude,position.coords.latitude);    
+	    }
+	    //////////////////////////////
+	    function initPage(x,y){
+	        var element = document.getElementById('geolocation');
+	        element.innerHTML = getPosText(x,y);//'<b>Long:</b> '+position.coords.longitude+
+	        					//',<br><b>Lat:</b> '+position.coords.latitude+ 
+	        					//(position.coords.altitude!=null?',<br><b>High:</b> '+position.coords.altitude:'');
+	        					
+	    	showDiagramAt(x,y);    
+	    }
+	    	    
+	    function getPosText(x,y){	
+	    	return '<table><tr><td width="100px"><b>Long:</b>'+
+	    			'<input id="long" name="long" type="text" size="8" maxlength="8" value="'+
+	    			(''+x).substring(0,8)+
+	    			'" width="10" onchange="editCorrdinates()"></td><td width="100px"><b>Lat:</b>'+
+	    			'<input id="lat" name="lat" type="text" size="8" maxlength="8" value="'+
+	  				(''+y).substring(0,8)+
+	  				'" width="10" onchange="editCorrdinates()"></td></tr></table>';
+	  				
+	    }
+	    
+	    function editCorrdinates() {
+	    	
+	        var x = document.getElementById('long');
+	        var y = document.getElementById('lat');
+	        showDiagramAt(x.value,y.value);    	
+	    }
+	    
+        function showDiagramAt(x,y){
+			var p = (((Math.round(x * 2)*5)>=100)?'':'0')+
+					(Math.round(x * 2)*5)+
+					(Math.round(y * 2)*5);
+
+	        chgPicture('http://www.wetterzentrale.de/pics/MS_'+p+'_g05.png');
+	    }
+        //////////////////////// Just to make it more visible /////////////////////
+        
+        function fillSelectBox(){
+
+        	var h = new HashTable({
+        			Dresden:	"Dresden_avn\" selected",
+            		DD_Pirna:  	"140510_g05",
+            		Schöngleina:"115510_g05",
+            		Aberdeen:	"Aberdeen_avn",
+            		Ajaccio:	"Ajaccio_avn",
+        			Akureyri:	"Akureyri_avn",
+        			Alicante:	"Alicante_avn",
+        			Almeria:	"Almeria_avn",
+        			Ankara:		"Ankara_avn",
+        			Antalya:	"Antalya_avn",
+        			Archangelsk:"Archangelsk_avn",
+        			Athen:		"Athen_avn",
+        			Barcelona:	"Barcelona_avn",
+        			Belgrad:	"Belgrad_avn",
+        			Bergen:		"Bergen_avn",
+        			Berlin:		"Berlin_avn",
+        			Bordeaux:	"Bordeaux_avn",
+        			Brest:		"Brest_avn",
+        			Bruessel:	"Bruessel_avn",
+        			Budapest:	"Budapest_avn",
+        			Bukarest:	"Bukarest_avn",
+        			De_Bilt:	"De_Bilt_avn",
+        			Dresden:	"Dresden_avn",
+        			Dublin:		"Dublin_avn",
+        			Essen:		"Essen_avn",
+        			Frankfurt_M:"Frankfurt_Main_avn",
+        			Funchal:	"Funchal_avn",
+        			Genf:		"Genf_avn",
+        			Gibraltar:	"Gibraltar_avn",
+        			Hamburg:	"Hamburg_avn",
+        			Haparanda:	"Haparanda_avn",
+        			Helgoland:	"Helgoland_avn",
+        			Helsinki:	"Helsinki_avn",
+        			Istanbul:	"Istanbul_avn",
+        			Jan_Mayen:	"Jan_Mayen_avn",
+        			Karlsruhe:	"Karlsruhe_avn",
+        			Kiel:		"Kiel_avn",
+        			Kiew:		"Kiew_avn",
+        			Kopenhagen:	"Kopenhagen_avn",
+        			La_Coruna:	"La_Coruna_avn",
+        			La_Palma:	"La_Palma_avn",
+        			Larnaca:	"Larnaca_avn",
+        			Lissabon:	"Lissabon_avn",
+        			London:		"London_avn",
+        			Luqa:		"Luqa_avn",
+        			Luxemburg:	"Luxemburg_avn",
+        			Madrid:		"Madrid_avn",
+        			Manchester:	"Manchester_avn",
+        			Marseille:	"Marseille_avn",
+        			Moskau:		"Moskau_avn",
+        			Muenchen:	"Muenchen_avn",
+        			Nuuk:		"Nuuk_avn",
+        			Odessa:		"Odessa_avn",
+        			Oslo:		"Oslo_avn",
+        			Paris:		"Paris_avn",
+        			Porto:		"Porto_avn",
+        			Prag:		"Prag_avn",
+        			Reykjavik:	"Reykjavik_avn",
+        			Rom:		"Rom_avn",
+        			Sodankylae:	"Sodankylae_avn",
+        			Sofia:		"Sofia_avn",
+        			St_Petersburg:"St.Petersburg_avn",
+        			Stockholm:	"Stockholm_avn",
+        			Strasbourg:	"Strasbourg_avn",
+        			Stuttgart:	"Stuttgart_avn",
+        			Thorshavn:	"Thorshavn_avn",
+        			Toulouse:	"Toulouse_avn",
+        			Tromsoe:	"Tromsoe_avn",
+        			Verona:		"Verona_avn",
+        			Warschau:	"Warschau_avn",
+        			Wien:		"Wien_avn"	});
+        	
+	        var element = document.getElementById('cities');
+	        element.innerHTML = '<select id="cities" class="" onChange="setPicture( selectWert(document.getElementById(\'cities\')) )">';
+        	for (var k in h.items) {
+        	    if (h.hasItem(k)) {
+        	    	element.innerHTML += '<option value="'+h.items[k]+'">'+k+'</option>';
+        	    }
+        	}
+        	element.innerHTML += '</select>';
+	        	        
+        }
+        /////////////////////// document functions //////////////////////////
+        function doLoad(){
+        	fillSelectBox();
+        	initPage('14.0', '51.0');
+        };
+        
+        //////////////////////// Database Functions //////////////////////////
+        function sqLiteOpen(){
+			db = window.openDatabase("WeatherMan", "1.0", "WeatherMan DB", 200000);
+			alert("DB Open: " + db);
+	        db.transaction(fillDB, errorDB1, successDB);
+			alert("DB Transact: " + db);
+			console.log("Consolen Log Open");
+		}
+      	//create table and insert some record
+    	function fillDB(tx) {
+    	//	tx.executeSql('DROP TABLE IF EXISTS SoccerPlayer');
+			console.log("Consolen Log vor FillDB");
+	        tx.executeSql('CREATE TABLE IF NOT EXISTS Weatherman (id INTEGER PRIMARY KEY AUTOINCREMENT, Name TEXT NOT NULL, ChartID TEXT NOT NULL, chart BINARY )');
+	        console.log("Consolen Log nach FillDB");
+	        
+        }
+
+    	//function will be called when an error occurred
+    	function errorDB1(err) {
+            alert("Error DB1 Open processing SQL: "+err.code);
+    	}
+    	//function will be called when an error occurred
+    	function errorDB2(err) {
+            alert("Error DB2 Transact processing SQL: "+err.code);
+    	}
+    	//function will be called when an error occurred
+    	function errorDB3(err) {
+            alert("Error DB3 Query processing SQL: "+err.code);
+    	}
+    	//function will be called when an error occurred
+    	function errorDB4(err) {
+            alert("Error DB4 Insert Query processing SQL: "+err.code);
+    	}
+
+    	//function will be called when process succeed
+    	function successDB() {
+            alert("success!");
+            db.transaction(queryDB,errorDB2);
+        }
+
+    	function queryDB(tx){
+    		tx.executeSql('SELECT * FROM Weatherman',[],querySuccess,errorDB3);
+    	}
+
+    	function querySuccess(tx,result){
+    		console.log("Returned rows = " + result.rows.length);
+    		// this will be true since it was a select statement and so rowsAffected was 0
+    		if (!result.rowsAffected) {
+    		  console.log('No rows affected!');
+    		  return false;
+    		}    		
+    		/*
+    		var userLocList = document.getElementById('UserLocList');
+    		userLocList.empty();
+    		
+    		userLocList.each(result.rows,function(index){
+    			var row = result.rows.item(index);
+    			userLocList.append('<li><a href="#"><h3 class="ui-li-heading">'+row['Name']+'</h3><p class="ui-li-desc">Club '+row['ChartID']+'</p></a></li>');
+    		});
+
+    		userLocList.listview();
+    		*/
+    	}
+  		
+    	function insertLocDB(tx){
+       	 	tx.executeSql('INSERT INTO Weatherman(Name,ChartID, ) VALUES ('+locName+', '+pos+', NULL)',querySuccess,errorDB4);
+   		
+    	}
+
+   	 
+   	 	function saveLocation(p){
+        	 locName = window.prompt("Enter Location Name",p);
+        	 
+        	 db.transaction(insertLocDB,errorDB2);
+        	
+        }
+        
+      	///////////////////////// MISC ///////////////////////////////////
+        
+	    // onError Callback receives a PositionError object
+	    //
+	    function onError(error) {
+	        alert('code: '    + error.code    + '\n' +
+	                'message: ' + error.message + '\n');
+	    }
+	    
+	    function selectWert(sObj) {
+    		with (sObj) return options[selectedIndex].value;
+  		}
+	
+    </script> 
+  </head>
+  <!-- body id="stage" class="theme" style="background-color:white; color:black; font-family: arial;" -->
+  <body style="font-family: arial;" onload="doLoad()">
+  <div data-role="page" id="home" data-theme="c">
+	<img name="forecastimg" >    
+  	<table><tr><td id="geolocation" width="210px">
+  	Finding current location...</td><td>
+    <select id="cities" class="" onChange="setPicture( selectWert(document.getElementById('cities')) )">
+    	<option selected>Select City</option>
+    </select>
+    </td>
+    </tr>
+    </table>
+    <!-- button type="button" id="btn1" onclick="sqLiteOpen()">SQLite Create</button>
+    <button id="btn2" onclick="saveLocation(pos)">Save location as...</button>
+    <a href="./drag_quirk.html">Drag Drop</a>
+    <!-- button id="btn3" onclick="setPicture('CurrentLoc')">Here</button>
+	<ul id="UserLocList">
+	<li> dummy
+	</ul -->
+	</div>
+
+  </body>
+</html>

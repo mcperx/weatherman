@@ -1,0 +1,146 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <title>WeatherMan V0.1</title>
+    <script type="text/javascript" charset="utf-8" src="cordova-2.0.0.js"></script>   
+   <script >
+    	function chgPicture(newimg)
+    	{
+			var neues_bild = new Image(); // Image-Objekt erzeugen
+			neues_bild.src = newimg; // zweites Bild laden
+			document.forecastimg.src = neues_bild.src;		
+			document.getElementById("btn1").childNodes[0].nodeValue=newimg;	
+		}	    	
+	   // Wait for Cordova to load
+	    //
+	    document.addEventListener("deviceready", onDeviceReady, false);
+	
+	    // Cordova is ready
+	    //
+	    function onDeviceReady() {
+	        navigator.geolocation.getCurrentPosition(onSuccess, onError);
+	    }
+	
+	    // onSuccess Geolocation
+	    //
+	    function onSuccess(position) { 
+	    /*
+	        var element = document.getElementById('geolocation');
+	        element.innerHTML = 'Latitude: '           + position.coords.latitude              + '<br />' +
+	                            'Longitude: '          + position.coords.longitude             + '<br />' +
+	                            'Altitude: '           + position.coords.altitude              + '<br />' +
+	                            'Accuracy: '           + position.coords.accuracy              + '<br />' +
+	                            'Altitude Accuracy: '  + position.coords.altitudeAccuracy      + '<br />' +
+	                            'Heading: '            + position.coords.heading               + '<br />' +
+	                            'Speed: '              + position.coords.speed                 + '<br />' +
+	                            'Timestamp: '          +                                   position.timestamp          + '<br />';
+		*/
+		var pos = ('_'+ round(position.coords.latitude * 2)*5)+(round(position.coords.longitude * 2)*5);
+	        chgPicture('http://www.wetterzentrale.de/pics/MS_'+pos+'_g05.png');
+	    }
+	    
+            function showDiagramAt(x,y){
+		var pos = (''+ Math.round(y * 2)*5)+(Math.round(x * 2)*5);
+	        chgPicture('http://www.wetterzentrale.de/pics/MS_'+pos+'_g05.png');
+	    }
+           
+      
+	    // onError Callback receives a PositionError object
+	    //
+	    function onError(error) {
+	        alert('code: '    + error.code    + '\n' +
+	                'message: ' + error.message + '\n');
+	    }
+	    
+	    function selectWert(sObj) {
+    		with (sObj) return options[selectedIndex].value;
+  		}
+	
+    </script> 
+  </head>
+  <body>
+    <p id="geolocation">Finding geolocation...</p>
+    <img name="forecastimg" >
+    <BR>
+    <!--button type="button" id="btn1" onclick="chgPicture('http://www.wetterzentrale.de/pics/MS_140510_g05.png')">Zuhause</button>
+    <button id="btn2" onclick="chgPicture('http://www.wetterzentrale.de/pics/MS_Dresden_avn.png')">DD</button>
+    <button id="btn3" onclick="showDiagramAt(51.025903, 13.727884)">Here</button-->
+
+    <select id="cities" onChange="chgPicture('http://www.wetterzentrale.de/pics/MS_'+selectWert(document.getElementById('cities'))+'.png')">
+	<option selected="" value=""></option>
+	<option value="Dresden_avn">Dresden</option>
+	<option value="140510_g05">Pirna</option>
+	<option value="115510_g05">Schöngleina</option>
+	<option value="Aberdeen_avn">Aberdeen</option>
+	<option value="Ajaccio_avn">Ajaccio</option>
+	<option value="Akureyri_avn">Akureyri</option>
+	<option value="Alicante_avn">Alicante</option>
+	<option value="Almeria_avn">Almeria</option>
+	<option value="Ankara_avn">Ankara</option>
+	<option value="Antalya_avn">Antalya</option>
+	<option value="Archangelsk_avn">Archangelsk</option>
+	<option value="Athen_avn">Athen</option>
+	<option value="Barcelona_avn">Barcelona</option>
+	<option value="Belgrad_avn">Belgrad</option>
+	<option value="Bergen_avn">Bergen</option>
+	<option value="Berlin_avn">Berlin</option>
+	<option value="Bordeaux_avn">Bordeaux</option>
+	<option value="Brest_avn">Brest</option>
+	<option value="Bruessel_avn">Bruessel</option>
+	<option value="Budapest_avn">Budapest</option>
+	<option value="Bukarest_avn">Bukarest</option>
+	<option value="De_Bilt_avn">De_Bilt</option>
+	<option value="Dresden_avn">Dresden</option>
+	<option value="Dublin_avn">Dublin</option>
+	<option value="Essen_avn">Essen</option>
+	<option value="Frankfurt_Main_avn">Frankfurt_Main</option>
+	<option value="Funchal_avn">Funchal</option>
+	<option value="Genf_avn">Genf</option>
+	<option value="Gibraltar_avn">Gibraltar</option>
+	<option value="Hamburg_avn">Hamburg</option>
+	<option value="Haparanda_avn">Haparanda</option>
+	<option value="Helgoland_avn">Helgoland</option>
+	<option value="Helsinki_avn">Helsinki</option>
+	<option value="Istanbul_avn">Istanbul</option>
+	<option value="Jan_Mayen_avn">Jan_Mayen</option>
+	<option value="Karlsruhe_avn">Karlsruhe</option>
+	<option value="Kiel_avn">Kiel</option>
+	<option value="Kiew_avn">Kiew</option>
+	<option value="Kopenhagen_avn">Kopenhagen</option>
+	<option value="La_Coruna_avn">La_Coruna</option>
+	<option value="La_Palma_avn">La_Palma</option>
+	<option value="Larnaca_avn">Larnaca</option>
+	<option value="Lissabon_avn">Lissabon</option>
+	<option value="London_avn">London</option>
+	<option value="Luqa_avn">Luqa</option>
+	<option value="Luxemburg_avn">Luxemburg</option>
+	<option value="Madrid_avn">Madrid</option>
+	<option value="Manchester_avn">Manchester</option>
+	<option value="Marseille_avn">Marseille</option>
+	<option value="Moskau_avn">Moskau</option>
+	<option value="Muenchen_avn">Muenchen</option>
+	<option value="Nuuk_avn">Nuuk</option>
+	<option value="Odessa_avn">Odessa</option>
+	<option value="Oslo_avn">Oslo</option>
+	<option value="Paris_avn">Paris</option>
+	<option value="Porto_avn">Porto</option>
+	<option value="Prag_avn">Prag</option>
+	<option value="Reykjavik_avn">Reykjavik</option>
+	<option value="Rom_avn">Rom</option>
+	<option value="Sodankylae_avn">Sodankylae</option>
+	<option value="Sofia_avn">Sofia</option>
+	<option value="St.Petersburg_avn">St.Petersburg</option>
+	<option value="Stockholm_avn">Stockholm</option>
+	<option value="Strasbourg_avn">Strasbourg</option>
+	<option value="Stuttgart_avn">Stuttgart</option>
+	<option value="Thorshavn_avn">Thorshavn</option>
+	<option value="Toulouse_avn">Toulouse</option>
+	<option value="Tromsoe_avn">Tromsoe</option>
+	<option value="Verona_avn">Verona</option>
+	<option value="Warschau_avn">Warschau</option>
+	<option value="Wien_avn">Wien</option>
+     </select>
+  </body>
+</html>

@@ -1,0 +1,348 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>WeatherMan V0.1</title>
+    <meta  name="viewport" content="width=device-width, initial-scale=0, user-scalable=yes" />
+    <meta  http-equiv="Content-type" content="text/html; charset=utf-8">
+    <script type="text/javascript" charset="utf-8" src="cordova-2.0.0.js"></script>   
+    <script type="text/javascript" charset="utf-8" src="js/hash.js"></script>   
+
+	<link   rel="stylesheet" href="jquery/jquery.mobile-1.1.1.min.css" />
+	<script src="jquery/jquery-1.7.2.min.js"></script>
+	<script src="jquery/jquery.mobile-1.1.1.min.js"></script>
+
+   <script >
+		///////////////////////// jQuery Stuff //////////////////////////////////////
+
+   		////////////////////////// Location Services /////////////////////////////////
+   		var pos = "140510";
+   		var locName = "zuhause";
+		var db;
+   		function setPicture(img)
+    	{
+			if (img != "CurrentLoc"){
+				chgPicture("http://www.wetterzentrale.de/pics/MS_"+img+".png");
+			}else{
+				chgPicture("http://www.wetterzentrale.de/pics/MS_"+pos+"_g05.png");
+			}			
+		}	    	
+
+   		function chgPicture(newimg)
+    	{
+			var neues_bild = new Image(); // Image-Objekt erzeugen
+			neues_bild.src = newimg; // zweites Bild laden
+			document.forecastimg.src = neues_bild.src;		
+		}	    	
+	    // Wait for Cordova to load
+	    //
+	    document.addEventListener("deviceready", onDeviceReady, false);
+	
+	    // Cordova is ready
+	    //
+	    function onDeviceReady() {
+	        navigator.geolocation.getCurrentPosition(onSuccess, onError);
+	     //   sqLiteOpen();
+	    }
+	
+	    // onSuccess Geolocation
+	    function onSuccess(position) { 
+	    		    	
+	        var element = document.getElementById('geolocation');
+	        element.innerHTML = getPosText(position.coords);//'<b>Long:</b> '+position.coords.longitude+
+	        					//',<br><b>Lat:</b> '+position.coords.latitude+ 
+	        					//(position.coords.altitude!=null?',<br><b>High:</b> '+position.coords.altitude:'');
+	        					
+	    	showDiagramAt(position.coords.longitude,position.coords.latitude);    
+	    }
+	    
+	    function getPosText(pos){	
+	    	return '<table><tr><td width="50px"><b>Long:</b><input id="long" name="long" type="text" size="8" maxlength="8" value="'+
+	    		(''+pos.longitude).substring(0,7)+
+	    			'" width="10"></td><td width="50px"><b>Lat:</b)><input id="lat" name="lat" type="text" size="8" maxlength="8" value="'+
+	  			(''+pos.latitude).substring(0,7)+
+	  				'" width="10"></td><td width="15px"><button type="button" id="go"  onclick="editCorrdinates()" >Go</button></td></tr></table>';
+	    }
+	    
+	    function editCorrdinates() {
+	        var x = document.getElementById('long');
+	        var y = document.getElementById('lat');
+	        //console.log(''+x.value+'|'+y.value);
+	    	showDiagramAt(x.value,y.value);    	
+	    }
+	    
+        function showDiagramAt(x,y){
+			var p = (((Math.round(x * 2)*5)>100)?'':'0')+
+					(Math.round(x * 2)*5)+
+					(Math.round(y * 2)*5);
+
+	        chgPicture('http://www.wetterzentrale.de/pics/MS_'+p+'_g05.png');
+	    }
+        //////////////////////// Just to make it more visible /////////////////////
+        
+        function fillSelectBox{
+	        var element = document.getElementById('cities');
+	        element.innerHTML = '<select id="cities" onChange="setPicture( selectWert(document.getElementById(''cities'')) )">+
+	    	var arrCities = new Array("Dresden_avn">Dresden</option>
+    		'<option value="140510_g05">Pirna</option>
+    		'<option value="115510_g05">Schöngleina</option>
+    		'<option value="Aberdeen_avn">Aberdeen</option>
+    		'<option value="Ajaccio_avn">Ajaccio</option>
+    		'<option value="Akureyri_avn">Akureyri</option>
+    		'<option value="Alicante_avn">Alicante</option>
+    		'<option value="Almeria_avn">Almeria</option>
+    		'<option value="Ankara_avn">Ankara</option>
+    		'<option value="Antalya_avn">Antalya</option>
+    		'<option value="Archangelsk_avn">Archangelsk</option>
+    		'<option value="Athen_avn">Athen</option>
+    		'<option value="Barcelona_avn">Barcelona</option>
+    		'<option value="Belgrad_avn">Belgrad</option>
+    		'<option value="Bergen_avn">Bergen</option>
+    		<option value="Berlin_avn">Berlin</option>
+    		<option value="Bordeaux_avn">Bordeaux</option>
+    		<option value="Brest_avn">Brest</option>
+    		<option value="Bruessel_avn">Bruessel</option>
+    		<option value="Budapest_avn">Budapest</option>
+    		<option value="Bukarest_avn">Bukarest</option>
+    		<option value="De_Bilt_avn">De_Bilt</option>
+    		<option value="Dresden_avn">Dresden</option>
+    		<option value="Dublin_avn">Dublin</option>
+    		<option value="Essen_avn">Essen</option>
+    		<option value="Frankfurt_Main_avn">Frankfurt_Main</option>
+    		<option value="Funchal_avn">Funchal</option>
+    		<option value="Genf_avn">Genf</option>
+    		<option value="Gibraltar_avn">Gibraltar</option>
+    		<option value="Hamburg_avn">Hamburg</option>
+    		<option value="Haparanda_avn">Haparanda</option>
+    		<option value="Helgoland_avn">Helgoland</option>
+    		<option value="Helsinki_avn">Helsinki</option>
+    		<option value="Istanbul_avn">Istanbul</option>
+    		<option value="Jan_Mayen_avn">Jan_Mayen</option>
+    		<option value="Karlsruhe_avn">Karlsruhe</option>
+    		<option value="Kiel_avn">Kiel</option>
+    		<option value="Kiew_avn">Kiew</option>
+    		<option value="Kopenhagen_avn">Kopenhagen</option>
+    		<option value="La_Coruna_avn">La_Coruna</option>
+    		<option value="La_Palma_avn">La_Palma</option>
+    		<option value="Larnaca_avn">Larnaca</option>
+    		<option value="Lissabon_avn">Lissabon</option>
+    		<option value="London_avn">London</option>
+    		<option value="Luqa_avn">Luqa</option>
+    		<option value="Luxemburg_avn">Luxemburg</option>
+    		<option value="Madrid_avn">Madrid</option>
+    		<option value="Manchester_avn">Manchester</option>
+    		<option value="Marseille_avn">Marseille</option>
+    		<option value="Moskau_avn">Moskau</option>
+    		<option value="Muenchen_avn">Muenchen</option>
+    		<option value="Nuuk_avn">Nuuk</option>
+    		<option value="Odessa_avn">Odessa</option>
+    		<option value="Oslo_avn">Oslo</option>
+    		<option value="Paris_avn">Paris</option>
+    		<option value="Porto_avn">Porto</option>
+    		<option value="Prag_avn">Prag</option>
+    		<option value="Reykjavik_avn">Reykjavik</option>
+    		<option value="Rom_avn">Rom</option>
+    		<option value="Sodankylae_avn">Sodankylae</option>
+    		<option value="Sofia_avn">Sofia</option>
+    		<option value="St.Petersburg_avn">St.Petersburg</option>
+    		<option value="Stockholm_avn">Stockholm</option>
+    		<option value="Strasbourg_avn">Strasbourg</option>
+    		<option value="Stuttgart_avn">Stuttgart</option>
+    		<option value="Thorshavn_avn">Thorshavn</option>
+    		<option value="Toulouse_avn">Toulouse</option>
+    		<option value="Tromsoe_avn">Tromsoe</option>
+    		<option value="Verona_avn">Verona</option>
+    		<option value="Warschau_avn">Warschau</option>
+    		<option value="Wien_avn">Wien</option>
+        </select>
+        	
+        }
+        
+        //////////////////////// Database Functions //////////////////////////
+        function sqLiteOpen(){
+			db = window.openDatabase("WeatherMan", "1.0", "WeatherMan DB", 200000);
+			alert("DB Open: " + db);
+	        db.transaction(fillDB, errorDB1, successDB);
+			alert("DB Transact: " + db);
+			console.log("Consolen Log Open");
+		}
+      	//create table and insert some record
+    	function fillDB(tx) {
+    	//	tx.executeSql('DROP TABLE IF EXISTS SoccerPlayer');
+			console.log("Consolen Log vor FillDB");
+	        tx.executeSql('CREATE TABLE IF NOT EXISTS Weatherman (id INTEGER PRIMARY KEY AUTOINCREMENT, Name TEXT NOT NULL, ChartID TEXT NOT NULL, chart BINARY )');
+	        console.log("Consolen Log nach FillDB");
+	        
+        }
+
+    	//function will be called when an error occurred
+    	function errorDB1(err) {
+            alert("Error DB1 Open processing SQL: "+err.code);
+    	}
+    	//function will be called when an error occurred
+    	function errorDB2(err) {
+            alert("Error DB2 Transact processing SQL: "+err.code);
+    	}
+    	//function will be called when an error occurred
+    	function errorDB3(err) {
+            alert("Error DB3 Query processing SQL: "+err.code);
+    	}
+    	//function will be called when an error occurred
+    	function errorDB4(err) {
+            alert("Error DB4 Insert Query processing SQL: "+err.code);
+    	}
+
+    	//function will be called when process succeed
+    	function successDB() {
+            alert("success!");
+            db.transaction(queryDB,errorDB2);
+        }
+
+    	function queryDB(tx){
+    		tx.executeSql('SELECT * FROM Weatherman',[],querySuccess,errorDB3);
+    	}
+
+    	function querySuccess(tx,result){
+    		console.log("Returned rows = " + result.rows.length);
+    		// this will be true since it was a select statement and so rowsAffected was 0
+    		if (!result.rowsAffected) {
+    		  console.log('No rows affected!');
+    		  return false;
+    		}    		
+    		/*
+    		var userLocList = document.getElementById('UserLocList');
+    		userLocList.empty();
+    		
+    		userLocList.each(result.rows,function(index){
+    			var row = result.rows.item(index);
+    			userLocList.append('<li><a href="#"><h3 class="ui-li-heading">'+row['Name']+'</h3><p class="ui-li-desc">Club '+row['ChartID']+'</p></a></li>');
+    		});
+
+    		userLocList.listview();
+    		*/
+    	}
+  		
+    	function insertLocDB(tx){
+       	 	tx.executeSql('INSERT INTO Weatherman(Name,ChartID, ) VALUES ('+locName+', '+pos+', NULL)',querySuccess,errorDB4);
+   		
+    	}
+
+   	 
+   	 	function saveLocation(p){
+        	 locName = window.prompt("Enter Location Name",p);
+        	 
+        	 db.transaction(insertLocDB,errorDB2);
+        	
+        }
+        
+      	///////////////////////// MISC ///////////////////////////////////
+        
+	    // onError Callback receives a PositionError object
+	    //
+	    function onError(error) {
+	        alert('code: '    + error.code    + '\n' +
+	                'message: ' + error.message + '\n');
+	    }
+	    
+	    function selectWert(sObj) {
+    		with (sObj) return options[selectedIndex].value;
+  		}
+	
+    </script> 
+  </head>
+  <!-- body id="stage" class="theme" style="background-color:white; color:black; font-family: arial;" -->
+  <body style="font-family: arial;">
+  <div data-role="page" id="home" data-theme="c">
+	<img name="forecastimg" >    
+  	<table><tr><td id="geolocation" width="250px">
+	    	<table><tr>
+	    	<td width="50px">Long:<input id="long" name="long" type="text" size="8" maxlength="8" value="13.5" width="10"></td>
+	    	<td width="50px">Lat:<input id="lat" name="lat" type="text" size="8" maxlength="8" value="50.5" width="10"></td>
+	    	<td width="15px"><button type="button" id="go"  onclick="editCorrdinates()" >Go</button></td></tr></table>
+  	Finding current location...</td><td>
+    <select id="cities" class="" onChange="setPicture( selectWert(document.getElementById('cities')) )">
+		<option value="Dresden_avn">Dresden</option>
+		<option value="140510_g05">Pirna</option>
+		<option value="115510_g05">Schöngleina</option>
+		<option value="Aberdeen_avn">Aberdeen</option>
+		<option value="Ajaccio_avn">Ajaccio</option>
+		<option value="Akureyri_avn">Akureyri</option>
+		<option value="Alicante_avn">Alicante</option>
+		<option value="Almeria_avn">Almeria</option>
+		<option value="Ankara_avn">Ankara</option>
+		<option value="Antalya_avn">Antalya</option>
+		<option value="Archangelsk_avn">Archangelsk</option>
+		<option value="Athen_avn">Athen</option>
+		<option value="Barcelona_avn">Barcelona</option>
+		<option value="Belgrad_avn">Belgrad</option>
+		<option value="Bergen_avn">Bergen</option>
+		<option value="Berlin_avn">Berlin</option>
+		<option value="Bordeaux_avn">Bordeaux</option>
+		<option value="Brest_avn">Brest</option>
+		<option value="Bruessel_avn">Bruessel</option>
+		<option value="Budapest_avn">Budapest</option>
+		<option value="Bukarest_avn">Bukarest</option>
+		<option value="De_Bilt_avn">De_Bilt</option>
+		<option value="Dresden_avn">Dresden</option>
+		<option value="Dublin_avn">Dublin</option>
+		<option value="Essen_avn">Essen</option>
+		<option value="Frankfurt_Main_avn">Frankfurt_Main</option>
+		<option value="Funchal_avn">Funchal</option>
+		<option value="Genf_avn">Genf</option>
+		<option value="Gibraltar_avn">Gibraltar</option>
+		<option value="Hamburg_avn">Hamburg</option>
+		<option value="Haparanda_avn">Haparanda</option>
+		<option value="Helgoland_avn">Helgoland</option>
+		<option value="Helsinki_avn">Helsinki</option>
+		<option value="Istanbul_avn">Istanbul</option>
+		<option value="Jan_Mayen_avn">Jan_Mayen</option>
+		<option value="Karlsruhe_avn">Karlsruhe</option>
+		<option value="Kiel_avn">Kiel</option>
+		<option value="Kiew_avn">Kiew</option>
+		<option value="Kopenhagen_avn">Kopenhagen</option>
+		<option value="La_Coruna_avn">La_Coruna</option>
+		<option value="La_Palma_avn">La_Palma</option>
+		<option value="Larnaca_avn">Larnaca</option>
+		<option value="Lissabon_avn">Lissabon</option>
+		<option value="London_avn">London</option>
+		<option value="Luqa_avn">Luqa</option>
+		<option value="Luxemburg_avn">Luxemburg</option>
+		<option value="Madrid_avn">Madrid</option>
+		<option value="Manchester_avn">Manchester</option>
+		<option value="Marseille_avn">Marseille</option>
+		<option value="Moskau_avn">Moskau</option>
+		<option value="Muenchen_avn">Muenchen</option>
+		<option value="Nuuk_avn">Nuuk</option>
+		<option value="Odessa_avn">Odessa</option>
+		<option value="Oslo_avn">Oslo</option>
+		<option value="Paris_avn">Paris</option>
+		<option value="Porto_avn">Porto</option>
+		<option value="Prag_avn">Prag</option>
+		<option value="Reykjavik_avn">Reykjavik</option>
+		<option value="Rom_avn">Rom</option>
+		<option value="Sodankylae_avn">Sodankylae</option>
+		<option value="Sofia_avn">Sofia</option>
+		<option value="St.Petersburg_avn">St.Petersburg</option>
+		<option value="Stockholm_avn">Stockholm</option>
+		<option value="Strasbourg_avn">Strasbourg</option>
+		<option value="Stuttgart_avn">Stuttgart</option>
+		<option value="Thorshavn_avn">Thorshavn</option>
+		<option value="Toulouse_avn">Toulouse</option>
+		<option value="Tromsoe_avn">Tromsoe</option>
+		<option value="Verona_avn">Verona</option>
+		<option value="Warschau_avn">Warschau</option>
+		<option value="Wien_avn">Wien</option>
+    </select>
+    </td>
+    </tr>
+    </table>
+    <!-- button type="button" id="btn1" onclick="sqLiteOpen()">SQLite Create</button>
+    <button id="btn2" onclick="saveLocation(pos)">Save location as...</button>
+    <a href="./drag_quirk.html">Drag Drop</a>
+    <!-- button id="btn3" onclick="setPicture('CurrentLoc')">Here</button>
+	<ul id="UserLocList">
+	<li> dummy
+	</ul -->
+	</div>
+
+  </body>
+</html>
