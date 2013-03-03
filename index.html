@@ -2,7 +2,7 @@
 <html>
   <head>
     <title>WeatherMan V0.1</title>
-    <meta  name="viewport" content="width=device-width, initial-scale=0, user-scalable=yes" />
+    <meta  name="viewport" content="width=700px, initial-scale=0, user-scalable=yes" />
     <meta  http-equiv="Content-type" content="text/html; charset=utf-8">
     <script type="text/javascript" charset="utf-8" src="cordova-2.0.0.js"></script>   
     <script type="text/javascript" charset="utf-8" src="js/hash.js"></script>   
@@ -57,7 +57,12 @@
 	        					
 	    	showDiagramAt(x,y);    
 	    }
-	    	    
+	    
+	    /**
+	    * args x - longitude of the GPS position
+	    *      y - latitute of the GPS position
+	    * returns a html table structure containing the Lon and Lat values  
+	    */
 	    function getPosText(x,y){	
 	    	return '<table><tr><td width="100px"><b>Long:</b>'+
 	    			'<input id="long" name="long" type="text" size="8" maxlength="8" value="'+
@@ -69,6 +74,9 @@
 	  				
 	    }
 	    
+	    /**
+	    * takes the values of the edit fields for Long and Lat and calles @showDiagramAt(pos)
+	    */
 	    function editCorrdinates() {
 	    	
 	        var x = document.getElementById('long');
@@ -76,6 +84,13 @@
 	        showDiagramAt(x.value,y.value);    	
 	    }
 	    
+	    /**
+	    * args x - longitude of the GPS position
+	    *      y - latitute of the GPS position
+	    * takes the x,y pos and loads the corresponding image using the
+	    * 'http://www.wetterzentrale.de/pics/MS_'+p+'_g05.png' schema
+	    * @TODO: should be adopted to use other url in case outside of the MidEuropean area 
+	    */
         function showDiagramAt(x,y){
 			var p = (((Math.round(x * 2)*5)>=100)?'':'0')+
 					(Math.round(x * 2)*5)+
@@ -85,6 +100,11 @@
 	    }
         //////////////////////// Just to make it more visible /////////////////////
         
+        /**
+        * takes a hash map and fills a normal select box with these key-value pairs
+        * The key is taken to display, the value is to be selected and add to the url finaly  
+        * surounds the selectbox with a onchange etc.
+        */
         function fillSelectBox(){
 
         	var h = new HashTable({
